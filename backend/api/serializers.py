@@ -52,7 +52,9 @@ class UserWithRecipesSerializer(UserSerializer):
                 recipes_limit = int(recipes_limit)
                 queryset = queryset[:recipes_limit]
             except (TypeError, ValueError):
-                pass
+                raise serializers.ValidationError(
+                    'Ошибка запроса получения рецептов'
+                )
         return RecipeMinifiedSerializer(queryset, many=True).data
 
     def get_recipes_count(self, user_object):

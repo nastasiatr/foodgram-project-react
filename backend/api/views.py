@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 import pdfkit
 from django.db.models import Sum
@@ -31,8 +31,6 @@ from recipes.models import (
     TagRecipe,
 )
 from tags.models import Tag
-
-
 from users.models import User, Subscription
 
 
@@ -132,7 +130,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         data = {
             "page_objects": queryset,
             "user": user,
-            "created": datetime.now(),
+            "created": timezone.now(),
         }
 
         template = get_template("shopping_cart.html")
