@@ -44,7 +44,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
     @admin.display(description='Игредиенты')
     def ingredients_in_recipe(self):
-        """Вывод в админке всех ингредиентов рецепта."""
+        """Вывод в админке ингредиентов рецепта."""
         return self.ingredients.values_list('name')
 
     list_display = ('pk', 'name', 'author', ingredients_in_recipe, favorite_amount, )
