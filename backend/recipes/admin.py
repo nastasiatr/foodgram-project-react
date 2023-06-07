@@ -7,6 +7,7 @@ from .models import (
     FavoriteRecipe,
     TagRecipe,
     ShoppingCartRecipe,
+    Ingredient
 )
 
 
@@ -44,7 +45,7 @@ class RecipeAdmin(admin.ModelAdmin):
     @admin.display(description='Игредиенты')
     def ingredients_in_recipe(self):
         """Вывод в админке ингредиентов рецепта."""
-        return self.ingredientinrecipe_set.values_list()
+        return Ingredient.objects.values_list('name', flat=True)
 
     list_display = ('pk', 'name', 'author', ingredients_in_recipe, favorite_amount, )
     search_fields = ('author', 'name', )
