@@ -1,10 +1,9 @@
+from api.urls import users_patterns
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 from django.views.static import serve
-
-from api.urls import users_patterns
 
 urlpatterns = [
     path("admin/", admin.site.urls),
