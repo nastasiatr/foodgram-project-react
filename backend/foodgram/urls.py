@@ -9,7 +9,6 @@ from api.urls import users_patterns
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("api.urls", namespace="api")),
-    path(r"users/", include(users_patterns)),
 ]
 
 if settings.DEBUG:
