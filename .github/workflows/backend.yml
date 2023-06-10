@@ -60,6 +60,7 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram:v2
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram:v2
+            sudo service mysql stop
             sudo docker-compose stop
             sudo docker-compose rm backend
             docker rm -fv
