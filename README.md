@@ -26,4 +26,4 @@
 - SECRET_KEY- секретный ключ приложения django
 - ALLOWED_HOSTS- список разрешенных адресов
 - TELEGRAM_TO- id своего телеграм-аккаунта (можно узнать у @userinfobot, команда /start)
-- TELEGRAM_TOKEN- токен бота (получить токен можно у @BotFather, /token, имя бота)
+- TELEGRAM_TOKEN- токен Бота (получить токен можно у @BotFather, /token, имя бота)
