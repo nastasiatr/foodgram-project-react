@@ -8,7 +8,7 @@ services:
       - ./.env
 
   backend:
-    image: trusova/foodgram:v2
+    image: trusova/foodgram:v3.1
     restart: always
     volumes:
       - static_value:/app/static/
@@ -19,7 +19,7 @@ services:
       - ./.env
 
   frontend:
-    image: trusova/foodgram:v2
+    image: trusova/foodgram:v3.1
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
