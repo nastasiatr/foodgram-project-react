@@ -27,4 +27,3 @@
 - ALLOWED_HOSTS- список разрешенных адресов
 - TELEGRAM_TO- id своего телеграм-аккаунта (можно узнать у @userinfobot, команда /start)
 - TELEGRAM_TOKEN- токен бота (получить токен можно у @BotFather, /token, имя бота)
-
