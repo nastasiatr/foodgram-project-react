@@ -12,7 +12,7 @@
 - deploy - Автоматический деплой проекта на боевой сервер. Выполняется объем файлов из репозитория на сервере:
 - send_message - Отправка терминала в Telegram В репозитории на Гитхабе добавляются данные в Settings - Secrets - Actions secrets:
 - DOCKER_USERNAME- имя пользователя в DockerHub
-- DOCKER_PASSWORD- пароль пользователя в DockerHub
+- DOCKER_PASSWORD- пароль пользователя в DockerHub.
 - HOST- адрес сервера
 - USER- пользователь
 - SSH_KEY- приватный ssh ключ
