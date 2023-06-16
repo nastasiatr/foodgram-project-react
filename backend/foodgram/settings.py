@@ -11,9 +11,9 @@ SECRET_KEY = os.getenv(
     'django-insecure-3z&tc2nv^58@$sor#$mdw@=c9-k(owg8y69ek6nnaq@1(y)g*+'
 )
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['51.250.16.171', 'localhost', '127.0.0.1', 'trusova-project.ddns.net']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
