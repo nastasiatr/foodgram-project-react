@@ -17,6 +17,7 @@ services:
       - db
     env_file:
       - ./.env
+    container_name: trusova_backend_1
 
 
   nginx:
