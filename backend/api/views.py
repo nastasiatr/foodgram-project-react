@@ -101,12 +101,13 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = Ingredient.objects.all()
         name = self.request.query_params.get("name")
-        qs_starts = queryset.filter(name__istartswith=name)
-        qs_contains = queryset.filter(
-            ~Q(name__istartswith=name) & Q(name__icontains=name)
-        )
         if name is not None:
+            qs_starts = queryset.filter(name__istartswith=name)
+            qs_contains = queryset.filter(
+                ~Q(name__istartswith=name) & Q(name__icontains=name)
+            )
             queryset = list(qs_starts) + list(qs_contains)
+            return queryset
         return queryset
 
 
@@ -188,6 +189,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     "recipe__id").distinct()
             )
             queryset = queryset.filter(id__in=recipes_id)
+            return queryset
         return queryset
 
     @action(
