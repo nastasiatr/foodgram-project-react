@@ -36,10 +36,7 @@ class Recipe(models.Model):
         'Время приготовления в минутах',
         help_text='Введите время приготовления в минутах',
         validators=[
-            MinValueValidator(1,
-                              message='Укажите время (>= 1)'),
-                    ],
-    )
+            MinValueValidator(1, message='Укажите время (>= 1)'), ], )
     ingredients = models.ManyToManyField(
         Ingredient,
         through='IngredientInRecipe',
