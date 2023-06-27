@@ -13,7 +13,8 @@ class User(AbstractUser):
         max_length=settings.USERNAME_MAX_LENGTH,
         unique=True,
         help_text=(
-            'Придумайте имя пользователя. Маскимально допустимое количество символов: 150. '
+            'Придумайте имя пользователя.'
+            'Маскимальное кол-во символов: 150. '
             'Используйте только латинские буквы, цифры и символы @/./+/-/_'
         ),
         validators=[ASCIIUsernameValidator()],
@@ -32,10 +33,13 @@ class User(AbstractUser):
         },
     )
     first_name = models.CharField(
-        'Имя', max_length=settings.FIRST_NAME_MAX_LENGTH, help_text='Введите Ваше имя'
+        'Имя', max_length=settings.FIRST_NAME_MAX_LENGTH,
+        help_text='Введите Ваше имя'
     )
     last_name = models.CharField(
-        'Фамилия', max_length=settings.LAST_NAME_MAX_LENGTH, help_text='Введите Вашу фамилию'
+        'Фамилия',
+        max_length=settings.LAST_NAME_MAX_LENGTH, help_text=
+        'Введите Вашу фамилию'
     )
 
     class Meta:
