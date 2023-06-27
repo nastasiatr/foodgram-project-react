@@ -38,8 +38,8 @@ class User(AbstractUser):
     )
     last_name = models.CharField(
         'Фамилия',
-        max_length=settings.LAST_NAME_MAX_LENGTH, help_text=
-        'Введите Вашу фамилию'
+        max_length=settings.LAST_NAME_MAX_LENGTH,
+        help_text='Введите Вашу фамилию'
     )
 
     class Meta:

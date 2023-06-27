@@ -37,8 +37,7 @@ class Recipe(models.Model):
         help_text='Введите время приготовления в минутах',
         validators=[
             MinValueValidator(1,
-                              message=
-                              'Укажите время (больше, или равное 1)'),
+                              message='Укажите время (>= 1)'),
                     ],
     )
     ingredients = models.ManyToManyField(
@@ -140,5 +139,6 @@ class IngredientInRecipe(RecipeRelated):
 
     def __str__(self) -> str:
         return (
-            f'{self.ingredient.name} — {self.amount} {self.ingredient.measurement_unit}'
+            f'{self.ingredient.name} — {self.amount} '
+            f'{self.ingredient.measurement_unit}'
         )

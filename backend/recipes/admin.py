@@ -2,7 +2,9 @@ from django.conf import settings
 from django.contrib import admin
 
 from .models import (
-    FavoriteRecipe, Ingredient, IngredientInRecipe, Recipe, ShoppingCartRecipe,
+    FavoriteRecipe, Ingredient,
+    IngredientInRecipe, Recipe,
+    ShoppingCartRecipe,
     TagRecipe,
 )
 
@@ -33,7 +35,8 @@ class ShoppingCartRecipeInline(admin.TabularInline):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    @admin.display(description='Количество добавленных рецептов в избранное')
+    @admin.display(
+        description='Количество добавленных рецептов в избранное')
     def favorite_amount(self):
         """Вывод в админке количества избранных рецептов."""
         return FavoriteRecipe.objects.filter(recipe=self.id).count()
@@ -43,10 +46,13 @@ class RecipeAdmin(admin.ModelAdmin):
         """Вывод в админке ингредиентов рецепта."""
         return self.ingredients.values_list('name')
 
-    list_display = ('pk', 'name', 'author', ingredients_in_recipe, favorite_amount, )
+    list_display = ('pk', 'name', 'author',
+                    ingredients_in_recipe, favorite_amount, )
     search_fields = ('author', 'name', )
     list_filter = ('name', 'author', 'tags', )
-    inlines = (IngredientInRecipeInline, FavoriteRecipeInline, TagRecipeInline, ShoppingCartRecipeInline, )
+    inlines = (IngredientInRecipeInline,
+               FavoriteRecipeInline, TagRecipeInline,
+               ShoppingCartRecipeInline, )
     readonly_fields = (favorite_amount,)
     empty_value_display = settings.ADMIN_MODEL_EMPTY_VALUE
 
