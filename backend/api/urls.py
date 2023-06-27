@@ -2,10 +2,9 @@ from api.views import (
     IngredientViewSet, RecipeViewSet, TagViewSet, TokenCreateView,
     UserWithRecipesViewSet,
 )
-from rest_framework import routers
 from django.urls import include, path
 from djoser.views import TokenDestroyView, UserViewSet
-
+from rest_framework import routers
 
 app_name = "api"
 
