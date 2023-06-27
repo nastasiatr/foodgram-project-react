@@ -99,15 +99,15 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
 
     def get_queryset(self):
-        queryset = Ingredient.objects.all()
+        queryset_1 = Ingredient.objects.all()
         name = self.request.query_params.get("name")
         if name is not None:
-            qs_starts = queryset.filter(name__istartswith=name)
-            qs_contains = queryset.filter(
+            qs_starts = queryset_1.filter(name__istartswith=name)
+            qs_contains = queryset_1.filter(
                 ~Q(name__istartswith=name) & Q(name__icontains=name)
             )
-            queryset = list(qs_starts) + list(qs_contains)
-        return queryset
+            queryset_1 = list(qs_starts) + list(qs_contains)
+        return queryset_1
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -150,7 +150,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return super().get_serializer_class()
 
     def get_queryset(self):
-        queryset = Recipe.objects.all()
+        queryset_1 = Recipe.objects.all()
         user = self.request.user
         is_favorited = self.request.query_params.get("is_favorited")
         if is_favorited:
@@ -161,7 +161,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 else []
             )
             condition = Q(id__in=recipes_id)
-            queryset = queryset.filter(
+            queryset_1 = queryset_1.filter(
                 condition if is_favorited == "1" else ~condition
             ).all()
         is_in_shopping_cart = self.request.query_params.get(
@@ -174,12 +174,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 else []
             )
             condition = Q(id__in=recipes_id)
-            queryset = queryset.filter(
+            queryset_1 = queryset_1.filter(
                 condition if is_in_shopping_cart == "1" else ~condition
             ).all()
         author_id = self.request.query_params.get("author")
         if author_id:
-            queryset = queryset.filter(author__id=author_id).all()
+            queryset_1 = queryset_1.filter(author__id=author_id).all()
         tags = self.request.query_params.getlist("tags")
         if tags:
             tags = Tag.objects.filter(slug__in=tags).all()
@@ -187,8 +187,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 TagRecipe.objects.filter(tag__in=tags).values(
                     "recipe__id").distinct()
             )
-            queryset = queryset.filter(id__in=recipes_id)
-        return queryset
+            queryset_1 = queryset_1.filter(id__in=recipes_id)
+        return queryset_1
 
     @action(
         detail=False,
