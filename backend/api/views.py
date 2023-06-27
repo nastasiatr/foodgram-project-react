@@ -1,5 +1,3 @@
-import pdfkit
-
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
     IngredientSerializer, RecipeListSerializer, RecipeMinifiedSerializer,
@@ -61,8 +59,8 @@ class UserWithRecipesViewSet(
 
     def get_serializer_class(self):
         if self.action in (
-            "create",
-            "destroy",
+                "create",
+                "destroy",
         ):
             return SubscriptionSerializer
         return super().get_serializer_class()
@@ -135,16 +133,16 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in (
-            "destroy",
-            "partial_update",
+                "destroy",
+                "partial_update",
         ):
             return [permission() for permission in self.edit_permission_classes]
         return super().get_permissions()
 
     def get_serializer_class(self):
         if self.action in (
-            "create",
-            "partial_update",
+                "create",
+                "partial_update",
         ):
             return self.edit_serializer_class
         return super().get_serializer_class()
@@ -186,17 +184,37 @@ class RecipeViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(id__in=recipes_id)
         return queryset
 
-    @action(permission_classes=((IsAuthenticated,)), detail=False)
+    @action(
+        detail=False,
+        methods=('get',),
+        permission_classes=(IsAuthenticated,)
+    )
     def download_shopping_cart(self, request):
-        queryset = (
-            IngredientInRecipe.objects.filter(
-                recipe__shoppingcartrecipe__user=request.user
-            )
-            .values("ingredient__name", "ingredient__measurement_unit")
-            .annotate(Sum("amount"))
-            .order_by("ingredient__name")
+        shopping_cart = ShoppingCartRecipe.objects.filter(user=self.request.user)
+        recipes = [item.recipe.id for item in shopping_cart]
+        buy_list = IngredientInRecipe.objects.filter(
+            recipe__in=recipes
+        ).values(
+            'ingredient'
+        ).annotate(
+            amount=Sum('amount')
         )
-        return RecipeViewSet.generate_shopping_cart_pdf(queryset, request.user)
+
+        buy_list_text = 'Список покупок с сайта Foodgram:\n\n'
+        for item in buy_list:
+            ingredient = Ingredient.objects.get(pk=item['ingredient'])
+            amount = item['amount']
+            buy_list_text += (
+                f'{ingredient.name}, {amount} '
+                f'{ingredient.measurement_unit}\n'
+            )
+
+        response = HttpResponse(buy_list_text, content_type="text/plain")
+        response['Content-Disposition'] = (
+            'attachment; filename=shopping-list.txt'
+        )
+
+        return response
 
     @staticmethod
     def create_related_object(request, pk, model, serializer, error):

@@ -20,6 +20,16 @@ services:
     container_name: trusova_backend_1
 
 
+  frontend:
+    image: trusova/foodgram:v3.1
+    restart: always
+    volumes:
+      - ../frontend/:/app/result_build/
+    depends_on:
+      - backend
+
+
+
   nginx:
     image: nginx:1.19.3
     ports:
@@ -34,6 +44,7 @@ services:
 
     depends_on:
       - backend
+      - frontend
 
 volumes:
   static_value:

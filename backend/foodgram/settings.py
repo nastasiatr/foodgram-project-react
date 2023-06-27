@@ -2,7 +2,6 @@ import os
 
 from pathlib import Path
 
-from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -49,10 +48,7 @@ ROOT_URLCONF = 'foodgram.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        "DIRS": [
-            BASE_DIR / "backend" / "api" / "templates",
-            BASE_DIR / "backend" / "recipes" / "templates",
-        ],
+        "DIRS": [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
