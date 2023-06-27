@@ -116,7 +116,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     edit_permission_classes = (IsAuthorOrReadOnly,)
 
     @staticmethod
-    def generate_shopping_cart_pdf(queryset, user):
+    def generate_shopping_cart_pdf(queryset, user, pdfkit=None):
         data = {
             "page_objects": queryset,
             "user": user,
