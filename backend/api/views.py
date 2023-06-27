@@ -101,13 +101,13 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = Ingredient.objects.all()
         name = self.request.query_params.get("name")
+        qs_starts = queryset.filter(name__istartswith=name)
+        qs_contains = queryset.filter(
+            ~Q(name__istartswith=name) & Q(name__icontains=name)
+        )
         if name is not None:
-            qs_starts = queryset.filter(name__istartswith=name)
-            qs_contains = queryset.filter(
-                ~Q(name__istartswith=name) & Q(name__icontains=name)
-            )
-            queryset_2 = list(qs_starts) + list(qs_contains)
-        return queryset_2
+            queryset = list(qs_starts) + list(qs_contains)
+        return queryset
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -216,12 +216,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 f'{ingredient.measurement_unit}\n'
             )
 
-        response_1 = HttpResponse(buy_list_text, content_type="text/plain")
-        response_1['Content-Disposition'] = (
+        response = HttpResponse(buy_list_text, content_type="text/plain")
+        response['Content-Disposition'] = (
             'attachment; filename=shopping-list.txt'
         )
 
-        return response_1
+        return response
 
     @staticmethod
     def create_related_object(request, pk, model, serializer, error):
