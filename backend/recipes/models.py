@@ -35,11 +35,11 @@ class Recipe(models.Model):
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления в минутах',
         help_text='Введите время приготовления в минутах',
-        validators=
-        [MinValueValidator(1,
-                           message=
-                           'Укажите время. (больше, или равное 1)'),
-         ],
+        validators=[
+            MinValueValidator(1,
+                              message=
+                              'Укажите время (больше, или равное 1)'),
+                    ],
     )
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -49,8 +49,7 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(
         Tag, through='TagRecipe',
-        verbose_name='Теги',
-        help_text='Выберите теги'
+        verbose_name='Теги', help_text='Выберите теги'
     )
 
     class Meta:
@@ -60,8 +59,7 @@ class Recipe(models.Model):
         ordering = ("-created",)
 
     def __str__(self) -> str:
-        return (f'id: {self.id} '
-                f'Автор: {str(self.author)} Название: {self.name}')
+        return f'id: {self.id} Автор: {str(self.author)} Название: {self.name}'
 
 
 class RecipeRelated(models.Model):
@@ -130,9 +128,9 @@ class IngredientInRecipe(RecipeRelated):
         'Количество ингредиентов',
         help_text='Введите количество ингредиентов',
         validators=[
-            MinValueValidator(1,
-                              message=
-                              'Укажите кол-во ингредиентов (больше, или равное 1)'),
+            MinValueValidator(
+                1,
+                message='Укажите кол-во ингредиентов (больше, или равное 1)'),
         ],
     )
 
@@ -142,6 +140,5 @@ class IngredientInRecipe(RecipeRelated):
 
     def __str__(self) -> str:
         return (
-            f'{self.ingredient.name} — {self.amount} '
-            f'{self.ingredient.measurement_unit}'
+            f'{self.ingredient.name} — {self.amount} {self.ingredient.measurement_unit}'
         )
