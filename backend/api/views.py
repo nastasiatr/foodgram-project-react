@@ -1,7 +1,6 @@
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
-    IngredientSerializer, RecipeListSerializer,
-    RecipeMinifiedSerializer,
+    IngredientSerializer, RecipeListSerializer, RecipeMinifiedSerializer,
     RecipeSerializer, SubscriptionSerializer, TagSerializer,
     UserWithRecipesSerializer,
 )
@@ -14,8 +13,7 @@ from django.utils import timezone
 from djoser import views
 from ingredients.models import Ingredient
 from recipes.models import (
-    FavoriteRecipe, IngredientInRecipe, Recipe,
-    ShoppingCartRecipe, TagRecipe,
+    FavoriteRecipe, IngredientInRecipe, Recipe, ShoppingCartRecipe, TagRecipe,
 )
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action

@@ -2,10 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 
 from .models import (
-    FavoriteRecipe,
-    IngredientInRecipe, Recipe,
-    ShoppingCartRecipe,
-    TagRecipe,
+    FavoriteRecipe, IngredientInRecipe, Recipe, ShoppingCartRecipe, TagRecipe,
 )
 
 
