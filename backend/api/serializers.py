@@ -31,7 +31,7 @@ class UserSerializer(djoser_serializers.UserSerializer):
     class Meta(djoser_serializers.UserSerializer.Meta):
         model = User
         fields = (djoser_serializers.UserSerializer.Meta.fields
-                  + 'is_subscribed',)
+                  + ('is_subscribed',))
 
 
 class UserWithRecipesSerializer(UserSerializer):
