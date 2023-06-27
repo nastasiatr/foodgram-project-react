@@ -1,6 +1,7 @@
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
-    IngredientSerializer, RecipeListSerializer, RecipeMinifiedSerializer,
+    IngredientSerializer, RecipeListSerializer,
+    RecipeMinifiedSerializer,
     RecipeSerializer, SubscriptionSerializer, TagSerializer,
     UserWithRecipesSerializer,
 )
@@ -13,7 +14,8 @@ from django.utils import timezone
 from djoser import views
 from ingredients.models import Ingredient
 from recipes.models import (
-    FavoriteRecipe, IngredientInRecipe, Recipe, ShoppingCartRecipe, TagRecipe,
+    FavoriteRecipe, IngredientInRecipe, Recipe,
+    ShoppingCartRecipe, TagRecipe,
 )
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
@@ -53,7 +55,8 @@ class UserWithRecipesViewSet(
         try:
             self.get_object()
         except Http404:
-            data = {'errors': 'Ошибка! Невозможно отписаться. Вы не подсисаны на автора'}
+            data = {'errors': 'Ошибка! Невозможно отписаться.'
+                              ' Вы не подсисаны на автора'}
             return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
         return super().destroy(request, *args, **kwargs)
 
@@ -136,7 +139,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 "destroy",
                 "partial_update",
         ):
-            return [permission() for permission in self.edit_permission_classes]
+            return [permission() for permission
+                    in self.edit_permission_classes]
         return super().get_permissions()
 
     def get_serializer_class(self):
@@ -153,7 +157,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         is_favorited = self.request.query_params.get("is_favorited")
         if is_favorited:
             recipes_id = (
-                FavoriteRecipe.objects.filter(user=user).values("recipe__id")
+                FavoriteRecipe.objects.filter(user=user).values(
+                    "recipe__id")
                 if user.is_authenticated
                 else []
             )
@@ -161,10 +166,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(
                 condition if is_favorited == "1" else ~condition
             ).all()
-        is_in_shopping_cart = self.request.query_params.get("is_in_shopping_cart")
+        is_in_shopping_cart = self.request.query_params.get(
+            "is_in_shopping_cart")
         if is_in_shopping_cart:
             recipes_id = (
-                ShoppingCartRecipe.objects.filter(user=user).values("recipe__id")
+                ShoppingCartRecipe.objects.filter(user=user).values(
+                    "recipe__id")
                 if user.is_authenticated
                 else []
             )
@@ -179,7 +186,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if tags:
             tags = Tag.objects.filter(slug__in=tags).all()
             recipes_id = (
-                TagRecipe.objects.filter(tag__in=tags).values("recipe__id").distinct()
+                TagRecipe.objects.filter(tag__in=tags).values(
+                    "recipe__id").distinct()
             )
             queryset = queryset.filter(id__in=recipes_id)
         return queryset
@@ -190,7 +198,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permission_classes=(IsAuthenticated,)
     )
     def download_shopping_cart(self, request):
-        shopping_cart = ShoppingCartRecipe.objects.filter(user=self.request.user)
+        shopping_cart = (
+            ShoppingCartRecipe.objects.filter(user=self.request.user))
         recipes = [item.recipe.id for item in shopping_cart]
         buy_list = IngredientInRecipe.objects.filter(
             recipe__in=recipes
@@ -245,7 +254,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @favorite.mapping.delete
     def delete_favorite(self, request, pk):
-        return RecipeViewSet.delete_related_object(request, pk, FavoriteRecipe)
+        return RecipeViewSet.delete_related_object(request, pk,
+                                                   FavoriteRecipe)
 
     @action(methods=["post"], detail=True)
     def shopping_cart(self, request, pk):
@@ -259,4 +269,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @shopping_cart.mapping.delete
     def delete_shopping_cart(self, request, pk):
-        return RecipeViewSet.delete_related_object(request, pk, ShoppingCartRecipe)
+        return RecipeViewSet.delete_related_object(request,
+                                                   pk,
+                                                   ShoppingCartRecipe)

@@ -14,9 +14,13 @@ auth_patterns = [
 ]
 
 users_patterns = [
-    path(r"", UserViewSet.as_view({"get": "list", "post": "create"}), name="users"),
-    path(r"<int:id>/", UserViewSet.as_view({"get": "retrieve"}), name="user-detail"),
-    path(r"me/", UserViewSet.as_view({"get": "me"}), name="me-detail"),
+    path(r"", UserViewSet.as_view({"get": "list",
+                                   "post": "create"}),
+         name="users"),
+    path(r"<int:id>/", UserViewSet.as_view({"get": "retrieve"}),
+         name="user-detail"),
+    path(r"me/", UserViewSet.as_view({"get": "me"}),
+         name="me-detail"),
     path(
         r"set_password/",
         UserViewSet.as_view({"post": "set_password"}),
@@ -29,14 +33,16 @@ users_patterns = [
     ),
     path(
         r"<int:author_id>/subscribe/",
-        UserWithRecipesViewSet.as_view({"post": "create", "delete": "destroy"}),
+        UserWithRecipesViewSet.as_view({"post": "create",
+                                        "delete": "destroy"}),
         name="subscribe",
     ),
 ]
 
 router = routers.DefaultRouter()
 router.register(r"tags", TagViewSet, basename="tags")
-router.register(r"ingredients", IngredientViewSet, basename="ingredients")
+router.register(r"ingredients", IngredientViewSet,
+                basename="ingredients")
 router.register(r"recipes", RecipeViewSet, basename="recipes")
 
 urlpatterns = [
