@@ -1,9 +1,9 @@
 from django.db import transaction
 from djoser import serializers as djoser_serializers
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers as serializers
 from ingredients.models import Ingredient
 from recipes.models import IngredientInRecipe, Recipe
-from rest_framework import serializers as serializers
 from tags.models import Tag
 from users.models import Subscription, User
 
