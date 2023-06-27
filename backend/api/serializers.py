@@ -119,8 +119,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault(), read_only=True)
     image = Base64ImageField(max_length=None, use_url=True)
     ingredients = IngredientInRecipeSerializer(
-        source="ingredientinrecipe_set", many=True
-    )
+        source="ingredientinrecipe_set", many=True)
     tags = TagSerializer(many=True)
     is_favorited = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
@@ -142,7 +141,8 @@ class RecipeListSerializer(serializers.ModelSerializer):
         return (
                 request.user.is_authenticated
                 and
-                recipe.shoppingcartrecipe_set.filter(user=request.user).exists()
+                recipe.shoppingcartrecipe_set.filter
+                (user=request.user).exists()
         )
 
 
@@ -193,7 +193,8 @@ class RecipeSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         if 'ingredientinrecipe_set' in validated_data:
-            ingredientinrecipe_set = validated_data.pop('ingredientinrecipe_set')
+            ingredientinrecipe_set = (
+                validated_data.pop('ingredientinrecipe_set'))
             if ingredientinrecipe_set:
                 instance.ingredients.clear()
             RecipeSerializer.create_ingredientsinrecipe(
@@ -203,10 +204,12 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if len(attrs['tags']) == 0:
-            raise serializers.ValidationError('Выберите хотя бы 1 тег.')
+            raise serializers.ValidationError(
+                'Выберите хотя бы 1 тег.')
 
         if len(attrs['tags']) != len(set(attrs['tags'])):
-            raise serializers.ValidationError('Теги должны быть уникальны.')
+            raise serializers.ValidationError(
+                'Теги должны быть уникальны.')
 
         if len(attrs['ingredientinrecipe_set']) == 0:
             raise serializers.ValidationError(
@@ -216,7 +219,8 @@ class RecipeSerializer(serializers.ModelSerializer):
         ingredients = attrs['ingredientinrecipe_set']
         if len(ingredients) != len(set(obj['ingredient'] for obj
                                        in ingredients)):
-            raise serializers.ValidationError('Ингредиенты должны быть уникальны.')
+            raise serializers.ValidationError(
+                'Ингредиенты должны быть уникальны.')
 
         if any(obj['amount'] <= 0 for obj in ingredients):
             raise serializers.ValidationError(
