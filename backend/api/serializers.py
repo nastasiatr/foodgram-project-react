@@ -25,15 +25,13 @@ class UserSerializer(djoser_serializers.UserSerializer):
 
     def get_is_subscribed(self, author):
         request = self.context['request']
-        return (
-                request.user.is_authenticated
-                and author.subscriptions.filter(user=request.user).exists()
-        )
+        return (request.user.is_authenticated
+                and author.subscriptions.filter(user=request.user).exists())
 
     class Meta(djoser_serializers.UserSerializer.Meta):
         model = User
-        fields = (djoser_serializers.UserSerializer.Meta.fields +
-                  ('is_subscribed',))
+        fields = (djoser_serializers.UserSerializer.Meta.fields
+                  + 'is_subscribed',)
 
 
 class UserWithRecipesSerializer(UserSerializer):
@@ -130,20 +128,15 @@ class RecipeListSerializer(serializers.ModelSerializer):
 
     def get_is_favorited(self, recipe):
         request = self.context['request']
-        return (
-                request.user.is_authenticated
-                and
-                recipe.favoriterecipe_set.filter(user=request.user).exists()
-        )
+        return (request.user.is_authenticated and
+                recipe.favoriterecipe_set.filter(user=request.user).exists())
 
     def get_is_in_shopping_cart(self, recipe):
         request = self.context['request']
-        return (
-                request.user.is_authenticated
-                and
+        return (request.user.is_authenticated and
                 recipe.shoppingcartrecipe_set.filter
                 (user=request.user).exists()
-        )
+                )
 
 
 class RecipeSerializer(serializers.ModelSerializer):
