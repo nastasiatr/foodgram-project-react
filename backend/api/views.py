@@ -1,25 +1,28 @@
+from django.utils import timezone
+from django.db.models import Sum
+from django.db.models.query_utils import Q
+from django.http import Http404, HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404
+from django.template.loader import get_template
+from djoser import views
+from rest_framework import mixins, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
     IngredientSerializer, RecipeListSerializer, RecipeMinifiedSerializer,
     RecipeSerializer, SubscriptionSerializer, TagSerializer,
     UserWithRecipesSerializer,
 )
-from django.db.models import Sum
-from django.db.models.query_utils import Q
-from django.http import Http404, HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404
-from django.template.loader import get_template
-from django.utils import timezone
-from djoser import views
+
 from ingredients.models import Ingredient
 from recipes.models import (
     FavoriteRecipe, IngredientInRecipe, Recipe, ShoppingCartRecipe, TagRecipe,
 )
-from rest_framework import mixins, status, viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from tags.models import Tag
+
 from users.models import Subscription, User
 
 
